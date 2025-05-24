@@ -2,7 +2,7 @@
 <body>
   <div class="row">
     <div class="col-8 offset-2 mt-3">
-      <h3>Showing Details</h3>
+      <h2><%= listing.title %></h2>
     </div>
 
     <div class="card col-6 offset-2">
@@ -14,7 +14,8 @@
       <div class="card-img-overlay"></div>
       <div class="card-body">
         <p class="card-text">
-          <%= listing.title %> <br />
+          <!-- <%= listing.title %> <br /> -->
+          <br />
           &#8377; <%= listing.price.toLocaleString("en-IN") %> /night <br />
           <%= listing.description %> <br />
           <%= listing.country %> <br />
@@ -36,12 +37,32 @@
       >
     </button>
 
-    <form action="/listing/<%= listing._id %>?method=DELETE">
-      <button
-        class="btn btn-dark mt-3 offset-2"
-      >
-        Delete this listing
-      </button>
+    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+  <button class="btn btn-dark mt-3 offset-2">Delete this listing</button>
+</form>
+
+  </div>
+
+  <hr />
+  <div class="col-8 offset-2 mt-3 mb-4">
+    <h4>leave a review</h4>
+    <form action="/listing/<%= listing.id %>/review" method="POST">
+      <div class="mb-3 mt-3">
+        <label for="rating" class="form-label">Rating</label>
+        <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range"/>
+      </div>
+
+      <div class="mb-3 mt-3"> 
+        <label for="comment" class="form-label">Comments</label>
+        <textarea
+          name="review[comments]"
+          id="comments"
+          cols="30"
+          rows="10"
+          class="form-control"
+        ></textarea>
+      </div >
+      <button class="btn btn-dark mt-3" style="background-color: #fe424d; border: none;">Add review</button>
     </form>
   </div>
 </body>

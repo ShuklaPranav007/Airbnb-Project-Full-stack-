@@ -1,15 +1,15 @@
-const Joi = require('joi');
-const Listing = require('./models/listing');
+// schema.js
+const Joi = require("joi");
 
-module.exports.listingSchema = Joi.object({
-    listing : Joi.object({
-        title : Joi.string().required(),
-        Description : Joi.string().required(),
-        Country : Joi.string().required(),
-        Location : Joi.string().required(),
-        price : Joi.number().required().min(0),
-        image : Joi.string().allow("",null),
+const listingSchema = Joi.object({
+  listing: Joi.object({
+    title: Joi.string().required(),
+    price: Joi.number().required().min(0),
+    description: Joi.string().required(),
+    country: Joi.string().required(),
+    location: Joi.string().required(),
+    image: Joi.string().allow("", null),
+  }).required()
+});
 
-
-    }).required()
-})
+module.exports = listingSchema;
