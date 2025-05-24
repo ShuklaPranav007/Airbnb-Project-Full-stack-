@@ -115,7 +115,7 @@ app.delete(
   wrapAsync (async (req,res)=>{
     let {id} = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
-    // console.log(deletedListing);
+    console.log(deletedListing);
     res.redirect("/listings");
   })
 );
