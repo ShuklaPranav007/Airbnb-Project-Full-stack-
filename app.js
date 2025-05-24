@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExoressError.js")
+const listingSchema = require("./schema.js")
 
 
 main()
@@ -25,10 +26,21 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-
+// root
 app.get("/", (req, res) => {
   res.send("listening to root");
 })
+
+// validatin middleware
+const validationSchema = (req,res,next)=>{
+  let {err} = listingSchema.validate(req.body);
+  if(err){
+    let errMsg = error.details.map((el)=>el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  }else{
+    next();
+  }
+}
 
 // index route
 app.get("/listings", wrapAsync(async (req, res) => {
@@ -52,11 +64,9 @@ app.get("/listings/:id", wrapAsync(async (req, res) => {
 
 
 // create route
-app.post("/listings", wrapAsync(
+app.post("/listings",validationSchema,
+   wrapAsync(
   async (req, res, next) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "send valid listing detail")
-    }
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
@@ -73,10 +83,9 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 }))
 
 // update route
-app.put("/listings/:id", wrapAsync(async (req, res) => {
-  if (!req.body.listing) {
-    throw new ExpressError(400, "send valid listing detail")
-  }
+app.put("/listings/:id", 
+  validationSchema,
+  wrapAsync(async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndUpdate(id, { ...req.body.listing });
   res.redirect(`/listings/${id}`);
