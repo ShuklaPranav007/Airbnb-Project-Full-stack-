@@ -44,9 +44,25 @@ router.post("/login",
         req.flash("success", "welcome to Wanderlust!!! you are loggedIn");
         let redirectUrl = res.locals.redirectUrl || "/listings";
         res.redirect(redirectUrl);
+        
     }
     
 );
+
+// router.post('/login', (req, res, next) => {
+//   passport.authenticate('local', (err, user, info) => {
+//     if (err) return next(err);
+//     if (!user) {
+//       req.flash('error', 'Invalid credentials');
+//       return res.redirect('/login');
+//     }
+//     req.logIn(user, (err) => {
+//       if (err) return next(err);
+//       req.flash('success', 'Welcome back!');
+//       res.redirect('/dashboard');
+//     });
+//   })(req, res, next);
+// });
 
 
 router.get("/logout", (req, res, next) => {
