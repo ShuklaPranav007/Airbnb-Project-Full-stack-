@@ -14,17 +14,18 @@
       <div class="card-img-overlay"></div>
       <div class="card-body">
         <p class="card-text">
-          <!-- <%= listing.title %> <br /> -->
-          <br />
-          &#8377; <%= listing.price.toLocaleString("en-IN") %> /night <br />
+          <br>
+          Listing owner : <%= listing.owner.username %> <br />
           <%= listing.description %> <br />
-          <%= listing.country %> <br />
           <%= listing.location %> <br />
+          <%= listing.country %> <br />
+          &#8377; <%= listing.price.toLocaleString("en-IN") %> /night <br />
         </p>
       </div>
     </div>
   </div>
 
+  <% if(currUser &&  currUser._id.equals(listing.owner._id)){ %>
   <div class="btns">
     <button
       class="btn btn-dark mt-3 col-2 offset-2"
@@ -41,6 +42,7 @@
       <button class="btn btn-dark mt-3 offset-2">Delete this listing</button>
     </form>
   </div>
+  <% } %>
 
   <hr />
 
