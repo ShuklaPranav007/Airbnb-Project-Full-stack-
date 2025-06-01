@@ -52,7 +52,7 @@ router.post("/", validateListing,
 
 
 // edit route
-router.get("/:id/edit",
+router.get("/:id/edit", 
   isloggedIn, isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
@@ -60,7 +60,7 @@ router.get("/:id/edit",
     if (!listing) {
       // req.flash("success", "Edit successful")
       req.flash("error", "Listing you requested does not exist");
-      res.redirect("/listings")
+      return res.redirect("/listings")
     }
     res.render("listings/edit.ejs", { listing })
   }))

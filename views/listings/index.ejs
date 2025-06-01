@@ -1,36 +1,49 @@
 <% layout("/layouts/boilerplate") %>
 <style>
+  #filters{
+    display: flex;
+
+  }
   .filter {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   .filter div {
     text-align: center;
-    margin: 2rem 2rem 0 0;
+    margin-top: 2rem;
+    margin-right: 1rem;
     opacity: 0.7;
   }
   .filter div:hover {
     opacity: 1;
     cursor: pointer;
   }
-  .tax-info{
+  .tax-info {
     display: none;
   }
   .toggle{
-    border: 1px solid black;
-    border-radius: 1rem;
-    margin-left: 2rem;
-    display: flex;
+    
+    /* margin-left: 2rem; */
+    display: flex; 
     align-items: center;
+    justify-content: center;
+    padding: 2rem;
 
   }
- .form-check-label{
-    color:brown;
+  .form-switch {
+    border: 1px solid black;
+    border-radius: 10px;
+    /* padding: .7rem; */
+  }
+
+  .form-check-label {
+    color: brown;
   }
 </style>
 
 <body>
-  <div id="filters" >
+  <div id="filters">
     <div class="filter">
       <div>
         <i class="fa-solid fa-fire"></i>
@@ -60,28 +73,9 @@
         <i class="fa-solid fa-fire"></i>
         <p>Trending</p>
       </div>
-      <div>
-        <i class="fa-solid fa-bed"></i>
-        <p>Stay</p>
-      </div>
-      <div>
-        <i class="fa-solid fa-bowl-food"></i>
-        <p>Services</p>
-      </div>
-      <div>
-        <i class="fa-solid fa-fire"></i>
-        <p>Trending</p>
-      </div>
-      <div>
-        <i class="fa-solid fa-bed"></i>
-        <p>Stay</p>
-      </div>
-      <div>
-        <i class="fa-solid fa-bowl-food"></i>
-        <p>Services</p>
-      </div>
-
-      <div class="toggle">
+    </div>
+    
+      <div class="toggle ms-auto">
         <div class="form-check-reverse form-switch">
           <input
             class="form-check-input"
@@ -94,7 +88,6 @@
           >
         </div>
       </div>
-    </div>
   </div>
 
   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
@@ -111,7 +104,7 @@
         <div class="card-body">
           <p class="card-text">
             <%= listing.title %> <br />
-            &#8377; <%= listing.price.toLocaleString("en-IN") %> /night 
+            &#8377; <%= listing.price.toLocaleString("en-IN") %> /night
             <i class="tax-info">+18%</i>
           </p>
         </div>
@@ -121,14 +114,14 @@
   </div>
 </body>
 
-
 <script>
   let taxSwitch = document.getElementById("switchCheckDefault");
-  taxSwitch.addEventListener("click", ()=>{
+  taxSwitch.addEventListener("click", () => {
     let taxinfo = document.getElementsByClassName("tax-info");
-    for (info of taxinfo){
-      if(info.style.display != "inline"){
-      info.style.display = "inline";}else{
+    for (info of taxinfo) {
+      if (info.style.display != "inline") {
+        info.style.display = "inline";
+      } else {
         info.style.display = "none";
       }
     }
