@@ -46,9 +46,9 @@ const sessionOptions = {
 };
 
 // root
-app.get("/", (req, res) => {
-  res.send("listening to root");
-})
+// app.get("/", (req, res) => {
+//   res.send("listening to root");
+// })
 
 
 app.use(session(sessionOptions));
