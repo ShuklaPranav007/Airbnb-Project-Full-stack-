@@ -3,21 +3,22 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js")
 const Listing = require("../models/listing.js");
 const { isloggedIn, isOwner, validateListing } = require("../middleware.js")
-const multer = require+("multer");
-const upload = multer({dest : 'uploads/'})
+const multer = require("multer");
+const {storage} = require("../cloudConfig.js")
+const upload = multer({storage})
 
 const listingController = require('../controllers/listings.js');
+const { reviewSchema } = require("../schema.js");
 
 router.route("/")
   .get(wrapAsync(listingController.index))
-  // .post(validateListing,
-  //   isloggedIn,
-  //   wrapAsync(listingController.createListings)
-  // );
-  .post(upload.single('listing[image]'),(req,res)=>{
-    res.send(req.file)
-  })
-
+  .post(
+    isloggedIn,
+    upload.single('listing[image]'),
+    validateListing,
+    wrapAsync(listingController.createListings)
+  );
+  
 
 //New route
 router.get("/new", isloggedIn, listingController.renderNewform)
