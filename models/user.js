@@ -1,7 +1,8 @@
 const { required } = require("joi");
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema;
-const passportLocalMonggose = require("passport-local-mongoose")
+const passportLocalMongoose = require("passport-local-mongoose");
+
 
 const userSchema = new Schema({
     email: {
@@ -10,6 +11,6 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.plugin(passportLocalMonggose);
+userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model('User', userSchema);  

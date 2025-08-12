@@ -3,7 +3,6 @@ if(process.env.NODE_ENV != "production"){
 }
 
 
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -22,6 +21,7 @@ const listingsRouter = require("./routes/listing.js");
 const reviewRouter = require('./routes/review.js');
 const userRouter = require("./routes/user.js");
 
+const dbUrl = process.env.ATLASDB_URL;
 
 
 main()
@@ -30,7 +30,11 @@ main()
 
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+  // await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+  await mongoose.connect(dbUrl);
+  // console.log("DB URL:", process.env.ATLASDB_URL);
+
+  
 }
 
 app.set("views engine", "ejs");
