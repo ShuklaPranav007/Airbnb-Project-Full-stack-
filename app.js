@@ -11,6 +11,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExoressError.js")
 const session = require("express-session")
+const MongoStore = require('connect-mongo')
 const flash = require("connect-flash")
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -33,11 +34,9 @@ async function main() {
   // await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
   await mongoose.connect(dbUrl);
   // console.log("DB URL:", process.env.ATLASDB_URL);
-
-  
 }
 
-app.set("views engine", "ejs");
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"))
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -45,8 +44,22 @@ app.engine("ejs", ejsMate);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 
+const Store = MongoStore.create({
+  mongoUrl :dbUrl,
+  crypto : {
+    secret : process.env.SECRET
+  },
+  touchAfter : 24*3600,
+})
+
+Store.on("error", (err)=>{
+  console.log("Error in mongo Session Store", err)
+})
+
+
 const sessionOptions = {
-  secret: "mysecret",
+  store: Store,
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -56,10 +69,6 @@ const sessionOptions = {
   },
 };
 
-// root
-// app.get("/", (req, res) => {
-//   res.send("listening to root");
-// })
 
 
 app.use(session(sessionOptions));
@@ -81,14 +90,6 @@ app.use((req, res, next) => {
   next();
 })
 
-// app.get("/demouser", async (req, res) => {
-//   let fakeUser = new User({
-//     email : "pranav@gmail.com",
-//     username :  "pranav007"
-//   })
-//   let registeredUser = await User.register(fakeUser, "abcd");
-//   res.send(registeredUser);
-// })
 
 // routes
 app.use("/listings", listingsRouter);
